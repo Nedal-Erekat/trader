@@ -1,0 +1,27 @@
+/* components/StockValue.module.css */
+
+.container {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.heading {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.value {
+  font-size: 18px;
+  color: #666;
+}
+
+.green {
+  background-color: lightgreen;
+}
+
+.red {
+  background-color: lightcoral;
+}

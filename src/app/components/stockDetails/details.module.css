@@ -1,0 +1,9 @@
+.container {
+    max-width: 80%;
+    margin: auto;
+    padding: 50px
+}
+
+.chart {
+    border: 2px solid black;
+}
