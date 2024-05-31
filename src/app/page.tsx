@@ -1,57 +1,22 @@
-"use client";
+
 import styles from "./page.module.css";
-import { useEffect, useState } from "react";
-import StockValue from "./components/stockItem/stock";
-import Link from "next/link";
+// import { useState } from "react";
 
-export default function Home() {
-  const [symbolData, setSymbolData] = useState({});
-  useEffect(() => {
-    const socket = new WebSocket(
-      `wss://ws.twelvedata.com/v1/quotes/price?apikey=dd1187a4708c4f8595b8dfcbaf773441`
-    );
+import CryptoList from "../components/cryptoList";
+import "chart.js/auto";
 
-    socket.onopen = function () {
-      socket.send(
-        JSON.stringify({
-          action: "subscribe",
-
-          params: {
-            symbols: "AAPL,INFY,TRP,QQQ,IXIC,EUR/USD,USD/JPY,BTC/USD,ETH/BTC",
-          },
-        })
-      );
-    };
-
-    // Listen for messages
-    socket.addEventListener("message", (event) => {
-      // console.log("Message from server ", event.data);
-      const data = JSON.parse(event.data);
-      // Update symbol data
-      setSymbolData((prevData) => {
-        if (data.symbol) {
-          return {
-            ...prevData,
-            [data.symbol]: data.price,
-          };
-        }
-
-        return { ...prevData };
-      });
-    });
-
-    return () => socket.close();
-  }, []);
+export default async function Home() {
+  // const [symbolData, setSymbolData] = useState({});
+  
+  const res = await fetch('https://min-api.cryptocompare.com/data/top/mktcapfull?limit=10&tsym=USD&api_key=YOUR_API_KEY');
+    const data = await res.json();
+    const cryptos = data.Data;
 
   return (
     <main className={styles.main}>
       <div>
         <h1>Welcome to Stock Value App</h1>
-        {Object.entries(symbolData).map(([symbol, price]) => (
-          <Link key={symbol} href={`/${encodeURIComponent(symbol)}`}>
-            <StockValue symbol={symbol} stockValue={price} />
-          </Link>
-        ))}
+        <CryptoList cryptos={cryptos} />
       </div>
     </main>
   );
